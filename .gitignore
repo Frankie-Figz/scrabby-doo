@@ -1,0 +1,8 @@
+# installed modules
+node_modules/
+
+# instructions directory
+Instructions/
+
+# env vars
+.env
