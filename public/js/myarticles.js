@@ -20,7 +20,7 @@ $.getJSON("savedarticles", data => {
       cardNoteLink.attr('data-id', data[i]._id);
       let cardOpenNotes = $('<button class="btn btn-success float-right note-open">Open Notes</button>');
       cardOpenNotes.attr('data-id',data[i]._id);
-
+      // Append all the previous elements to be displayed to the card
       cardBody.append([cardTitle, cardSummary, cardArticleLink, cardOpenNotes, cardNoteLink]);
       card.append([cardBody, notes]);
       $('#articles').append(card);
@@ -28,46 +28,48 @@ $.getJSON("savedarticles", data => {
 });
 
 $(document).on('click',".note-open", function(){
+  // Get the id of the article
   var thisId = $(this).attr("data-id");
-  let miniForm = $('<form> </form>');
+  // If their is a previous container with notes, get it. 
+  // We will empty it to avoid having duplicity in comments.
+  $(".container-notes").remove();
+  // Create a new container to be used to append the notes to it.
+  var container = $("<div>");
+  container.attr("class","container-notes");
   // let textBox = $('<textarea class="form-control" rows="5"></textarea>');
-  console.log("card-" + thisId);
   var card = $("#card-" + thisId);
-  var notes = [];
-  var notesId = [];
-
+  // A call to retrieve all the notes associated to an article
   $.getJSON("/articles/" + thisId + "/comments", data => {
-    // Iterate over our notes and append the note to the minibox
-    // console.log(data.note.toString());
-    console.log("This is the myarticles js ");
-    console.log(data);
+    // Iterate over our notes and append the notes to the cards
     for(var i = 0; i < data.length; i++){
       let cardSummary = $('<p class="card-text"></p>');
       cardSummary.text(data[i].body);
-      card.append(cardSummary);
+      container.append(cardSummary);
     };
-
-    console.log("I am here trying to show my notes !");
-  })
-
-})
+  // Closes the getJSON call
+  });
+  // Append the container to the card
+  card.append(container);
+});
 
 $(document).on('click', ".note-btn", function() {
+  $(".miniform-notes").remove();
   var thisId = $(this).attr("data-id");
   let miniForm = $('<form/>');
+  miniForm.addClass("miniform-notes");
+  miniForm.attr("id", "miniForm-" + thisId);
   let textbox = $('<textarea class="form-control" rows="5"></textarea>');
   let noteSubmit = $('<button class="btn btn-primary float-right note-submit" type="submit">Save</button>');
   noteSubmit.attr('data-id', thisId);
   miniForm.append([textbox, noteSubmit]);
   $(this).parent().append(miniForm);
-
 });
 
 $(document).on('click', ".note-submit", function(e) {
   e.preventDefault();
   var thisId = $(this).attr("data-id");
   let noteText = $(this).parent().find("textarea").val();
-
+  var miniForm = $("#miniForm-" + thisId);
   $.ajax({
     method: "POST",
     url: "/articles/" + thisId + "/comments",
@@ -76,8 +78,8 @@ $(document).on('click', ".note-submit", function(e) {
     }
   }).then(data => {
     console.log(data);
+    miniForm.remove();
   });
-
 });
 
 
