@@ -1,15 +1,25 @@
 body {
     background-color: black;
     color: white;
+    font-family: 'Scada', sans-serif;
 }
 
 .jumbotron {
-    background-image: url("../imgs/newspaper.jpg");
+    background-image: url("../imgs/my-newspaper.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
     color: black;
     font-weight: bolder;
+}
+
+.note-open {
+    background-color:gold;
+    color: white;
+}
+
+.btn {
+    margin: 0px 10px 0px 10px;
 }
 
 .card {
@@ -18,5 +28,3 @@ body {
     color: white;
     margin-bottom: 25px;
 }
-
-

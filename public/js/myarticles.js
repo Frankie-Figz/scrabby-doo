@@ -18,7 +18,7 @@ $.getJSON("savedarticles", data => {
       cardSummary.text(data[i].summary);
       let cardNoteLink = $('<button class="btn btn-success float-right note-btn">New Note</button>');
       cardNoteLink.attr('data-id', data[i]._id);
-      let cardOpenNotes = $('<button class="btn btn-success float-right note-open">Open Notes</button>');
+      let cardOpenNotes = $('<button class="btn float-right note-open">Open Notes</button>');
       cardOpenNotes.attr('data-id',data[i]._id);
       // Append all the previous elements to be displayed to the card
       cardBody.append([cardTitle, cardSummary, cardArticleLink, cardOpenNotes, cardNoteLink]);
